@@ -1,0 +1,68 @@
+lab 9
+
+1.Which is a relational database that serves up to five times better performance than MySQL in AWS.
+
+Redshift
+Aurora
+MongDB
+DynamoDB
+Answer: B) Aurora
+
+2. What AWS service can be used to host and manage databases in the cloud?
+
+a) Amazon S3
+
+b) AWS Lambda
+
+c) Amazon RDS
+
+d) AWS Glue
+
+Correct answer: c) Amazon RDS
+
+3. Which of these configuration or deployment practices is a security risk for RDS?
+
+A. Storing SQL function code in plaintext
+
+B. Non-Multi-AZ RDS instance
+
+C. Having RDS and EC2 instances exist in the same subnet
+
+D. RDS in a public subnet
+
+Answer : D
+
+4. If I modify a DB Instance or the DB parameter group associated with the instance, should I reboot the instance for the changes to take effect?
+
+No
+
+Yes
+
+Answer: Yes
+
+5. A user is configuring the Multi-AZ feature of an RDS DB. The user came to know that this RDS DB does not use the AWS technology, but uses server mirroring to achieve replication. Which DB is the user using right now?
+
+MySQL
+
+Oracle
+
+My SQL
+
+PostgreSQL
+
+Answer: My SQL
+
+lab 10
+
+1. Which AWS service can be used to distribute traffic across multiple EC2 instances or load balancers?
+
+a) Amazon Route 53
+
+b) AWS Elastic Beanstalk
+
+c) AWS Auto Scaling
+
+d) Amazon CloudFront
+
+Correct answer: a) Amazon Route 53
+

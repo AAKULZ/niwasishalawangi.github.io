@@ -1,0 +1,50 @@
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding
+from base64 import b64encode, b64decode
+
+def encrypt(plain_text, key):
+    iv = b'\x00' * 16  
+
+    padder = padding.PKCS7(algorithms.AES.block_size).padder()
+    padded_data = padder.update(plain_text) + padder.finalize()
+
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+
+    encryptor = cipher.encryptor()
+    cipher_text = encryptor.update(padded_data) + encryptor.finalize()
+
+    return b64encode(iv + cipher_text).decode('utf-8')
+
+def decrypt(cipher_text, key):
+    cipher_text = b64decode(cipher_text)
+    iv = cipher_text[:16]
+    cipher_text = cipher_text[16:]
+
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+
+    decryptor = cipher.decryptor()
+    padded_data = decryptor.update(cipher_text) + decryptor.finalize()
+
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    plain_text = unpadder.update(padded_data) + unpadder.finalize()
+
+    return plain_text.decode('utf-8')
+
+
+key_size = int(input("Enter key size (128, 192, or 256): "))
+
+if key_size not in [128, 192, 256]:
+    print("Invalid key size. Choose 128, 192, or 256.")
+
+
+key = np.random.randint(0, 256, size=key_size // 8, dtype=np.uint8)
+
+data = input("Enter data to encrypt: ")
+
+text_to_encrypt = data
+encrypted_text = encrypt(text_to_encrypt.encode('utf-8'), key)
+print(f"Encrypted Text: {encrypted_text}")
+
+decrypted_text = decrypt(encrypted_text, key)
+print(f"Decrypted Text: {decrypted_text}")

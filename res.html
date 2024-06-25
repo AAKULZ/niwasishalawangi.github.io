@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Website with Rotating Image</title>
+    <style>
+        /* Basic reset and styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+            display: none; /* Initially hide the body */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header > div {
+            flex: 0.70;
+            text-align: center;
+        }
+
+        header > div img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        header > div.title {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 15vh; /* 20% of the viewport height */
+        }
+
+	.marathi-title {
+            font-family: 'Shadows Into Light', cursive;
+            color: navy;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1),
+                         -2px -2px 0px rgba(0, 0, 0, 0.1),
+                         2px -2px 0px rgba(0, 0, 0, 0.1),
+                         -2px 2px 0px rgba(0, 0, 0, 0.1),
+                         0px 2px 5px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            word-spacing: 5px;
+            padding: 10px 20px;
+            display: inline-block;
+
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: #ddd;
+            border-radius: 4px;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .content > div {
+            flex: 1 1 calc(33.333% - 40px);
+            min-width: 280px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .content > div {
+                flex: 1 1 calc(50% - 40px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content > div {
+                flex: 1 1 100%;
+            }
+
+	    header > div img{
+	    	width: 30%;
+	    }
+        }
+
+	.image-boxes {
+            display: flex;
+            width: 70%;
+            justify-content: space-between; /* Added space between boxes */
+            align-items: center; /* Center the items vertically */
+        }
+
+        .image-box {
+            width: 20%; /* Adjusted width for more space */
+            height: 100px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-right: 8px; /* Added margin between boxes */
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        /* Styling for the rotating image */
+        #rotated-image {
+            display: none; /* Hide the image initially */
+        }
+    </style>
+</head>
+<body>
+    <div id="rotated-image-container" style="text-align: center; margin-top: 50px;">
+        <img id="rotated-image" src="your-image-url.jpg" alt="Rotating Image">
+    </div>
+    <div class="container">
+        <header>
+            <div>
+                <img src="samajiknyayvibhag.png" alt="Left Image">
+            </div>
+            <div class="title">
+		
+                <h1 class="marathi-title" style="font-size: 34px;">शासकीय मुलांची निवासी शाळा वांगी</h1>
+            </div>
+            <div class="image-boxes">
+        <div class="image-box">
+            <img src="ambed.jpg" title="Dr. Bhimrao Ambedkar" alt="Dr. Bhimrao Ambedkar">
+        </div>
+        <div class="image-box">
+            <img src="phule.jpg" title="Jyotiba Phule" alt="Jyotiba Phule">
+        </div>
+        <div class="image-box">
+            <img src="savitri bai.jpg" title="Savitribai Phule" alt="Savitribai Phule">
+        </div>
+        <div class="image-box">
+            <img src="Gadgemahraj.jpg" title="Ghadge Maharaj" alt="Ghadge Maharaj">
+        </div>
+        <div class="image-box">
+            <img src="shahu.jpg" title="Shahu Maharaj" alt="Shahu Maharaj">
+        </div>
+    </div>
+
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <div>
+                <h2>Section 1</h2>
+                <p>This is the first section of the content.</p>
+            </div>
+            <div>
+                <h2>Section 2</h2>
+                <p>This is the second section of the content.</p>
+            </div>
+            <div>
+                <h2>Section 3</h2>
+                <p>This is the third section of the content.</p>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Z AKHILESH</p>
+        </footer>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Rotate the image 360 degrees before displaying the website
+            var image = document.getElementById('rotated-image');
+            var container = document.getElementById('rotated-image-container');
+            image.style.display = 'block';
+
+            var rotation = 0;
+            var interval = setInterval(function() {
+                rotation += 10; // Rotate by 10 degrees each step
+                image.style.transform = 'rotate(' + rotation + 'deg)';
+
+                if (rotation >= 360) {
+                    clearInterval(interval); // Stop rotation when 360 degrees is reached
+                    document.body.style.display = 'block'; // Show the body
+                    container.style.display = 'none'; // Hide the image container
+                }
+            }, 50); // Rotate every 50 milliseconds
+        }
+    </script>
+</body>
+</html>

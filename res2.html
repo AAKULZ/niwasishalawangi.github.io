@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Website with Rotating Image</title>
+    <style>
+        /* Basic reset and styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    display: none; /* Initially hide the body */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative; /* Add position relative */
+}
+
+header > div {
+    flex: 0.70;
+    text-align: center;
+}
+
+header > div img {
+    max-width: 100%;
+    height: auto;
+}
+
+header > div.title {
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    padding-top: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh; /* 20% of the viewport height */
+    position: relative; /* Add position relative */
+    overflow: hidden; /* Add overflow hidden */
+}
+header > div.title h4,
+header > div.title h1 {
+    margin: 0; /* Remove spacing between h5 and h1 */
+}
+
+.marathi-title {
+    font-family: 'Shadows Into Light', cursive;
+    color: navy;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1),
+                 -2px -2px 0px rgba(0, 0, 0, 0.1),
+                 2px -2px 0px rgba(0, 0, 0, 0.1),
+                 -2px 2px 0px rgba(0, 0, 0, 0.1),
+                 0px 2px 5px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    word-spacing: 5px;
+    padding: 10px 20px;
+    display: inline-block;
+    position: relative; /* Add position relative */
+    z-index: 1; /* Ensure text is above canvas */
+}
+
+nav ul {
+    list-style: none;
+    padding: 20;
+    margin: 10;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+}
+
+nav ul li a:hover {
+    background-color: #ddd;
+    border-radius: 4px;
+    border: 4px solid navy; /* Added border width, style, and color */
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.content > div {
+    flex: 1 1 calc(100%);
+    min-width: 280px;
+    padding: 20px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul li {
+        margin: 0px 0;
+    }
+
+    .content > div {
+        flex: 1 1 calc(50% - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .content > div {
+        flex: 1 1 100%;
+    }
+
+    .logo {
+        flex-direction: column;
+        align-items: left;
+        width: 30%;
+    }
+
+    .image-boxes {
+        margin-top: 20px;
+        align-items: left;
+        width: 70%;
+    }
+
+    header {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .logo, .image-boxes {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+
+    header > div.title {
+        flex-direction: column;
+        order: 2;
+        width: 100%;
+    }
+
+    .logo {
+        order: 1;
+        width: 30%;
+    }
+
+    .image-boxes {
+        order: 1;
+        width: 70%;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.image-boxes {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Added space between boxes */
+    align-items: center; /* Center the items vertically */
+    position: relative; /* Add position relative */
+}
+
+.image-box {
+    width: 20%; /* Adjusted width for more space */
+    height: 100px;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-right: 8px; /* Added margin between boxes */
+    position: relative; /* Add position relative */
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    position: relative; /* Add position relative */
+    z-index: 1; /* Ensure images are above canvas */
+}
+
+/* Styling for the rotating image */
+#rotated-image {
+    display: none; /* Hide the image initially */
+}
+
+/* Canvas style for veins and flower effect */
+.canvas-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Ensure canvas is behind text/images */
+}
+    </style>
+</head>
+<body>
+    <div id="rotated-image-container" style="text-align: center; margin-top: 50px;">
+        <img id="rotated-image" src="your-image-url.jpg" alt="Rotating Image">
+    </div>
+    <div class="container">
+        <header>
+            <canvas class="canvas-bg"></canvas>
+            <div>
+                <img src="samajiknyayvibhag.png" alt="Left Image">
+            </div>
+            <div class="title">
+                <h4>अनुसूचित जाती-जमाती व नवबौध </h4>
+                <h1 class="marathi-title" style="font-size: 34px;">मुलांची शासकीय निवासी शाळा वांगी</h1>
+            </div>
+            <div class="image-boxes">
+                <canvas class="canvas-bg"></canvas>
+                <div class="image-box">
+                    <img src="ambed.jpg" title="Dr. Bhimrao Ambedkar" alt="Dr. Bhimrao Ambedkar">
+                </div>
+                <div class="image-box">
+                    <img src="phule.jpg" title="Jyotiba Phule" alt="Jyotiba Phule">
+                </div>
+                <div class="image-box">
+                    <img src="savitri bai.jpg" title="Savitribai Phule" alt="Savitribai Phule">
+                </div>
+                <div class="image-box">
+                    <img src="Gadgemahraj.jpg" title="Ghadge Maharaj" alt="Ghadge Maharaj">
+                </div>
+                <div class="image-box">
+                    <img src="shahu.jpg" title="Shahu Maharaj" alt="Shahu Maharaj">
+                </div>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">घर</a></li>
+                <li><a href="#">विषयी</a></li>
+                <li><a href="#">प्रवेश</a></li>
+                <li><a href="#">विभाग</a></li>
+                <li><a href="#">शैक्षणिक</a></li>
+                <li><a href="#">क्लब्स</a></li>
+                <li><a href="#">संसाधने</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <div>
+      		<img src="background.jpg">
+                <p>This is the first section of the content.</p>
+            </div>
+            <div>
+                <h2>Section 2</h2>
+                <p>This is the second section of the content.</p>
+            </div>
+            <div>
+                <h2>Section 3</h2>
+                <p>This is the third section of the content.</p>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Z AKHILESH</p>
+        </footer>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Rotate the image 360 degrees before displaying the website
+            var image = document.getElementById('rotated-image');
+            var container = document.getElementById('rotated-image-container');
+            image.style.display = 'block';
+
+            var rotation = 0;
+            var interval = setInterval(function() {
+                rotation += 10; // Rotate by 10 degrees each step
+                image.style.transform = 'rotate(' + rotation + 'deg)';
+
+                if (rotation >= 360) {
+                    clearInterval(interval); // Stop rotation when 360 degrees is reached
+                    document.body.style.display = 'block'; // Show the body
+                    container.style.display = 'none'; // Hide the image container
+
+                    // Initialize the canvas effect
+                    initCanvasEffect();
+                }
+            }, 50); // Rotate every 50 milliseconds
+        }
+
+        function initCanvasEffect() {
+            var canvases = document.querySelectorAll('.canvas-bg');
+            canvases.forEach(function(canvas) {
+                var ctx = canvas.getContext('2d');
+                var width = canvas.width = canvas.parentElement.offsetWidth;
+                var height = canvas.height = canvas.parentElement.offsetHeight;
+
+                // Flower properties
+                var flowers = [];
+                var colors = ['rgba(255, 165, 0, 0.8)', 'rgba(255, 255, 0, 0.8)', 'rgba(255, 105, 180, 0.8)', 'rgba(173, 255, 47, 0.8)', 'rgba(135, 206, 235, 0.8)'];
+
+                function createFlower() {
+                    var x = Math.random() * width;
+                    var y = Math.random() * height;
+                    var maxRadius = Math.random() * 30 + 20; // Flower size between 20 and 50
+                    var color = colors[Math.floor(Math.random() * colors.length)];
+                    var alpha = 0;
+                    var growthRate = Math.random() * 0.5 + 0.5;
+                    return { x, y, maxRadius, color, alpha, growthRate, radius: 0, startTime: performance.now() + Math.random() * 2000 };
+                }
+
+                function drawFlower(flower) {
+                    ctx.beginPath();
+                    ctx.arc(flower.x, flower.y, flower.radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = flower.color.replace('0.8', flower.alpha); // Adjust alpha for fading
+                    ctx.fill();
+                }
+
+                function updateFlower(flower, currentTime) {
+                    if (currentTime > flower.startTime) {
+                        flower.radius += flower.growthRate;
+                        flower.alpha += 0.005; // Adjust the alpha change rate for fading effect
+                        if (flower.radius > flower.maxRadius || flower.alpha > 0.8) {
+                            // Reset the flower when it reaches max size or max alpha
+                            Object.assign(flower, createFlower());
+                        }
+                    }
+                }
+
+                function animate() {
+                    var currentTime = performance.now();
+                    ctx.clearRect(0, 0, width, height);
+
+                    flowers.forEach(flower => {
+                        updateFlower(flower, currentTime);
+                        drawFlower(flower);
+                    });
+                    requestAnimationFrame(animate);
+                }
+
+                for (var i = 0; i < 30; i++) {
+                    flowers.push(createFlower());
+                }
+
+                animate();
+            });
+        }
+    </script>
+</body>
+</html>
+
