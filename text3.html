@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Website</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        header {
+            padding: 10px;
+            background-color: #004d40;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            flex: 0 0 20%;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .title-container {
+            flex: 0 0 55%;
+            text-align: center;
+        }
+
+        .title-container h4 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .marathi-title {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .image-container {
+            flex: 0 0 25%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .image-container img {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            width: 18%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        nav {
+            background-color: #00796b;
+            width: 100%;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Reduced gap for smaller screens */
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px; /* Reduced padding for smaller screens */
+            font-size: 0.9em; /* Reduced font size for smaller screens */
+            font-weight: 500;
+            transition: background-color 0.3s, border-radius 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #004d40;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .logo-container {
+                flex: 0 0 30%;
+            }
+
+            .image-container {
+                margin-left: 10%;
+                flex: 0 0 60%;
+            }
+
+            .title-container {
+                flex: 0 0 100%;
+                order: 1;
+                margin-top: 10px;
+            }
+
+            nav ul {
+                gap: 5px; /* Further reduced gap */
+            }
+
+            nav ul li a {
+                padding: 5px 10px; /* Further reduced padding */
+                font-size: 0.8em; /* Further reduced font size */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                margin-top: 20px;
+            }
+        }
+
+        .main-content {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .main-section {
+            flex: 70%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-right: 20px;
+            box-sizing: border-box;
+        }
+
+        .event-container {
+            margin-bottom: 30px;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 50%;
+            background-color: #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .event-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .event-description {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .sidebar {
+            flex: 30%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-sizing: border-box;
+        }
+
+        .news-section,
+        .calendar-section {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .news-section {
+            height: 50%;
+            width: 100%; /* Adjust width for responsive design */
+            overflow-y: auto;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 80px;
+            background-color: #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .news-description {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .calendar-section {
+            height: auto;
+            background-color: #fafafa;
+        }
+
+        .calendar-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-controls button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-controls button:hover {
+            background-color: #004d40;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .calendar div {
+            background-color: #fff;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar .header {
+            font-weight: bold;
+            background-color: #00796b;
+            color: #fff;
+        }
+
+        .calendar .today {
+            background-color: #ffeb3b;
+            font-weight: bold;
+        }
+
+        .calendar .disabled {
+            background-color: #f0f0f0;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="samajiknyayvibhag.png" alt="School Logo">
+                </div>
+                <div class="title-container">
+                    <h4>अनुसूचित जाती-जमाती व नवबौध</h4>
+                    <h1 class="marathi-title">मुलांची शासकीय निवासी शाळा वांगी</h1>
+                </div>
+                <div class="image-container">
+                    <img src="ambed.jpg" alt="Image 1">
+                    <img src="phule.jpg" alt="Image 2">
+                    <img src="savitri bai.jpg" alt="Image 3">
+                    <img src="gadgemahraj.jpg" alt="Image 4">
+                    <img src="shahu.jpg" alt="Image 5">
+                </div>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">घर</a></li>
+                <li><a href="#">विषयी</a></li>
+                <li><a href="#">प्रवेश</a></li>
+                <li><a href="#">विभाग</a></li>
+                <li><a href="#">शैक्षणिक</a></li>
+                <li><a href="#">क्लब्स</a></li>
+                <li><a href="#">संसाधने</a></li>
+            </ul>
+        </nav>
+    </ul>
+</nav>
+<div class="main-content">
+    <div class="main-section">
+        <div class="event-container">
+            <div class="event-image"></div>
+            <div class="event-title">Upcoming Event</div>
+            <div class="event-description">
+                Details about the upcoming event will be displayed here. This section can include event time, date, and a brief description.
+            </div>
+        </div>
+        <div class="event-container">
+            <div class="event-image"></div>
+            <div class="event-title">Another Event</div>
+            <div class="event-description">
+                Details about another event will be displayed here. Information on event activities, key speakers, and more can be included.
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="news-section">
+            <div class="news-title">Latest News</div>
+            <div class="news-description">
+                <div class="news-image"></div>
+                <p>News headline or short description goes here.</p>
+            </div>
+            <div class="news-description">
+                <div class="news-image"></div>
+                <p>Another news headline or short description.</p>
+            </div>
+        </div>
+        <div class="calendar-section">
+            <div class="calendar-title">शाळा कॅलेंडर</div>
+            <div class="calendar-controls">
+                <button onclick="prevMonth()">Prev</button>
+                <span id="month-year">August 2024</span>
+                <button onclick="nextMonth()">Next</button>
+            </div>
+            <div class="calendar" id="calendar">
+                <!-- The calendar grid will be populated by the JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+const today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+
+function generateCalendar(month, year) {
+    const calendar = document.getElementById('calendar');
+    calendar.innerHTML = '';
+
+    const monthYear = document.getElementById('month-year');
+    const monthNames = ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'];
+    monthYear.textContent = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month).getDay();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    const weekdays = ['रवि', 'सोम', 'मंगळ', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
+
+    weekdays.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.classList.add('header');
+        dayHeader.textContent = day;
+        calendar.appendChild(dayHeader);
+    });
+
+    for (let i = 0; i < firstDay; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('disabled');
+        calendar.appendChild(cell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement('div');
+        cell.textContent = day;
+
+        if (day === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+            cell.classList.add('today');
+        }
+
+        calendar.appendChild(cell);
+    }
+}
+
+function prevMonth() {
+    currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    generateCalendar(currentMonth, currentYear);
+}
+
+function nextMonth() {
+    currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    currentMonth = (currentMonth + 1) % 12;
+    generateCalendar(currentMonth, currentYear);
+}
+
+generateCalendar(currentMonth, currentYear);
+</script>
+</body>
+</html>
