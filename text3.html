@@ -145,6 +145,50 @@
             .sidebar {
                 margin-top: 20px;
             }
+
+            nav ul li a {
+                font-size: 0.8em; /* Reduce font size in navigation bar */
+            }
+        
+            .calendar-section, .calendar-control, .calendar-title, .cb {
+                font-size: 0.8em; /* Reduce font size in the calendar section */
+            }
+
+            .calendar 
+        
+            .calendar {
+                font-size: 0.8em; /* Reduce font size in the calendar section */
+            }
+        
+            .title-container h4, .marathi-title {
+                font-size: 1em; /* Reduce font size of the title */
+            }
+        }
+        
+        @media (max-width: 425px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                margin-top: 20px;
+            }
+
+            nav ul li a {
+                font-size: 0.6em; /* Reduce font size in navigation bar */
+            }
+        
+            .calendar-section, .calendar-control, .calendar-title, .cb {
+                font-size: 0.6em; /* Reduce font size in the calendar section */
+            }
+        
+            .calendar {
+                font-size: 0.6em; /* Reduce font size in the calendar section */
+            }
+
+            .title-container h4, .marathi-title {
+                font-size: 0.8em; /* Reduce font size of the title */
+            }
         }
 
         .main-content {
@@ -362,9 +406,9 @@
         <div class="calendar-section">
             <div class="calendar-title">शाळा कॅलेंडर</div>
             <div class="calendar-controls">
-                <button onclick="prevMonth()">Prev</button>
+                <button onclick="prevMonth()" class="cb">Prev</button>
                 <span id="month-year">August 2024</span>
-                <button onclick="nextMonth()">Next</button>
+                <button onclick="nextMonth()" class="cb">Next</button>
             </div>
             <div class="calendar" id="calendar">
                 <!-- The calendar grid will be populated by the JavaScript -->
