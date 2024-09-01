@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Website</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js"></script>
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        header {
+            padding: 20px;
+            background-color: #004d40;
+            background-image: url(headerbg.jpg);
+            background-size: 100% 200%; /* This ensures the image scales to fit both width and height */
+            background-position: center;
+            background-repeat: no-repeat;
+            padding-bottom: 5px;
+            
+
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0px;
+            box-sizing: border-box;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            flex: 0 0 20%;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .title-container {
+            flex: 0 0 55%;
+            text-align: center;
+        }
+
+        .title-container h4 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .marathi-title {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .image-container {
+            flex: 0 0 25%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .image-container img {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            width: 18%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        nav {
+            background-color: #2980b9;
+            width: 100%;
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        nav ul {
+            align-self: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s, border-radius 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #1c6e93;
+            border-radius: 5px;
+        }
+
+        .suv-container {
+            width: 100%;
+            background-color: #70bfcd;
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;border-radius: 5px;
+
+            padding-left: 5%;
+            padding-right: 5%;
+            margin-top: 5px;
+            font-size: 0.8em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .suv-text {
+            display: inline-block;
+            animation: scroll-left 15s linear infinite;
+        }
+
+        .suv-container > div {
+            display: flex;
+            align-items: center;
+        }
+        
+        .suv-container a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .suvichar-container {
+            width: 100%;
+            background-color: #08375e;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 5px;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .suvichar-container label {
+            width: 20%;
+            margin-right: 10px; /* Adding some space between the label and the scrolling text */
+            text-align: right;
+        }
+        
+        .suvt {
+            display: inline-block;
+            width: 80%;
+            overflow: hidden; /* Ensure the text stays within the container */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        
+        .suvichar-text {
+            display: inline-block;
+            animation: scroll-left 15s linear infinite;
+        }
+        
+        @keyframes scroll-left {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        
+        
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .sidebar-left, .sidebar-right {
+            width: 20%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-right {
+            width: 30%;
+        }
+        .contact-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #00796b;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-section h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-item img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form input, .contact-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form button {
+            padding: 10px;
+            background-color: #004d40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #00796b;
+        }
+
+        .map-section {
+            flex-grow: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .map-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .main-section {
+            width: 50%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        .event-container {
+            position: relative;
+            margin-bottom: 30px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+            object-fit: cover;
+        }
+
+        .event-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: left;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .event-description {
+            padding: 20px;
+            font-size: 0.9em;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-section, .calendar-section {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        .news-image {
+            width: 100%;
+            height: auto;
+            background-color: #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .news-description {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .calendar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .date-event-box {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+            display: none; /* Initially hidden */
+        }
+
+        .calendar-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-controls button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-controls button:hover {
+            background-color: #004d40;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            font-size: 0.8em;
+        }
+
+        .calendar div {
+            background-color: #fff;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar .header {
+            font-weight: bold;
+            background-color: #00796b;
+            color: #fff;
+        }
+
+        .calendar .today {
+            background-color: #ffeb3b;
+            font-weight: bold;
+        }
+
+        .calendar .disabled {
+            background-color: #f0f0f0;
+            color: #aaa;
+        }
+
+        @media (max-width: 1024px) {
+            .logo-container {
+                flex: 0 0 30%;
+            }
+
+            .image-container {
+                margin-left: 10%;
+                flex: 0 0 60%;
+            }
+
+            .title-container {
+                flex: 0 0 100%;
+                order: 1;
+                margin-top: 10px;
+            }
+
+            nav ul {
+                gap: 5px; /* Further reduced gap */
+            }
+
+            nav ul li a {
+                font-size: 0.8em; /* Further reduced font size */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar-right, .sidebar-left, .main-section {
+                width:100%;
+            }
+
+
+            nav {
+                padding: 5px;
+            }
+
+            .sidebar {
+                margin-top: 20px;
+            }
+
+            nav ul li a {
+                font-size: 0.8em; /* Reduce font size in navigation bar */
+            }
+        
+            .calendar-section, .calendar-control, .calendar-title, .cb {
+                font-size: 0.8em; /* Reduce font size in the calendar section */
+            }
+
+            .calendar {
+                font-size: 0.8em; /* Reduce font size in the calendar section */
+            }
+        
+            .title-container h4, .marathi-title {
+                font-size: 1em; /* Reduce font size of the title */
+            }
+        }
+        
+        @media (max-width: 425px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            nav {
+                padding: 2px;
+            }
+
+            .sidebar {
+                margin-top: 20px;
+            }
+
+            .suv-container, .suvichar-text, .suvichar-container label{
+                font-size: 0.6em;
+            }
+
+            nav ul li a {
+                font-size: 0.4em; /* Reduce font size in navigation bar */
+            }
+        
+            .calendar-section, .calendar-control, .calendar-title, .cb {
+                font-size: 0.6em; /* Reduce font size in the calendar section */
+            }
+        
+            .calendar {
+                font-size: 0.6em; /* Reduce font size in the calendar section */
+            }
+
+            .title-container h4, .marathi-title {
+                font-size: 0.8em; /* Reduce font size of the title */
+            }
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="samajiknyayvibhag.png" alt="School Logo">
+                </div>
+                <div class="title-container">
+                    <h4>अनुसूचित जाती-जमाती व नवबौध</h4>
+                    <h1 class="marathi-title">मुलांची शासकीय निवासी शाळा वांगी</h1>
+                </div>
+                <div class="image-container">
+                    <img src="ambed.jpg" alt="Image 1">
+                    <img src="phule.jpg" alt="Image 2">
+                    <img src="savitri bai.jpg" alt="Image 3">
+                    <img src="gadgemahraj.jpg" alt="Image 4">
+                    <img src="shahu.jpg" alt="Image 5">
+                </div>
+            </div>
+
+            <div class="suv-container">
+                <div class="contact">
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+1234567890">+123 456 7890</a>
+                </div>
+                <div class="contact">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@school.com">info@school.com</a>
+                </div>
+                <div class="contact">
+                    <i class="fas fa-comment-dots"></i>
+                    <a href="sms:+1234567890">Message Us</a>
+                </div>
+            </div>
+        </header>
+        <div class="suvichar-container" style="margin-top: 0;">
+            <label for="suvichar-text" id="marathi-date">आजचा सुविचार:</label>
+            <div class="suvt">
+            <div class="suvichar-text" id="suvichar-text">सुविचार लोड करत आहे...</div>
+            </div>
+        </div>
+        
+
+        <!-- Navigation Section -->
+        <nav>
+            <ul>
+                <li><a href="#">घर</a></li>
+                <li><a href="#">विषयी</a></li>
+                <li><a href="#">प्रवेश</a></li>
+                <li><a href="#">विभाग</a></li>
+                <li><a href="#">शैक्षणिक</a></li>
+                <li><a href="#">क्लब्स</a></li>
+                <li><a href="#">संसाधने</a></li>
+            </ul>
+        </nav>
+
+        <!-- Suvichar Scrolling Section -->
+
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <div class="sidebar-left">
+                <div class="contact-section">
+                    <h3>Contact Us</h3>
+                    <div class="contact-item">
+                        <img src="phone-icon.png" alt="Phone Icon">
+                        <a href="tel:+1234567890">+123 456 7890</a>
+                    </div>
+                    <div class="contact-item">
+                        <img src="email-icon.png" alt="Email Icon">
+                        <a href="mailto:info@school.com">info@school.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <img src="message-icon.png" alt="Message Icon">
+                        <a href="sms:+1234567890">Message Us</a>
+                    </div>
+                    <div class="contact-form">
+                        <input type="text" placeholder="Your Name">
+                        <input type="email" placeholder="Your Email">
+                        <textarea placeholder="Your Message"></textarea>
+                        <button onclick="sendMessage()">Send Message</button>
+                    </div>
+                </div>
+                <div class="map-section">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1886.9468974745945!2d74.383102!3d17.255540!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1619566891523!5m2!1sen!2sin"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        style="border:0;"
+                    ></iframe>
+                </div>
+            </div>
+
+            <!-- Main Section -->
+            <div class="main-section" id="events-section">
+                <div class="event-container">
+                    <img class="event-image" src="event1.jpg" alt="Event 1">
+                    <div class="event-title">Upcoming Event</div>
+                    <div class="event-description">
+                        Details about the upcoming event will be displayed here. This section can include event time, date, and a brief description.
+                    </div>
+                </div>
+                <div class="event-container">
+                    <img class="event-image" src="event2.jpg" alt="Event 2">
+                    <div class="event-title">Another Event</div>
+                    <div class="event-description">
+                        Details about another event will be displayed here. Information on event activities, key speakers, and more can be included.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar-right">
+                <div class="news-section" id="news-section">
+                    <div class="news-description">
+                        <img class="news-image" src="news1.jpg" alt="News 1">
+                        <div class="news-title">Latest News</div>
+                        <p>News headline or short description goes here.</p>
+                    </div>
+                    <div class="news-description">
+                        <img class="news-image" src="news2.jpg" alt="News 2">
+                        <div class="news-title">Another News</div>
+                        <p>Another news headline or short description.</p>
+                    </div>
+                </div>
+                <div class="calendar-section">
+                    <div class="calendar-title">शाळा कॅलेंडर</div>
+                    <div class="calendar-controls">
+                        <button onclick="prevMonth()">Prev</button>
+                        <span id="month-year">August 2024</span>
+                        <button onclick="nextMonth()">Next</button>
+                    </div>
+                    <div class="calendar" id="calendar">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                    <div class="date-event-box" id="date-event-box">
+                        <!-- Date-specific event details will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js';
+        import { getStorage, ref as storageRef, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js';
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxafYZWnxXQ0mq2VI3GOJUBOjimgYLi-k",
+            authDomain: "niwasishalawangi.firebaseapp.com",
+            projectId: "niwasishalawangi",
+            databaseURL: "https://niwasishalawangi-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            storageBucket: "niwasishalawangi.appspot.com",
+            messagingSenderId: "870763256160",
+            appId: "1:870763256160:web:566fd2071a020245dfe605",
+            measurementId: "G-PRHCBLNQ1M"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        function sendMessage() {
+            const name = document.querySelector('.contact-form input[type="text"]').value;
+            const email = document.querySelector('.contact-form input[type="email"]').value;
+            const message = document.querySelector('.contact-form textarea').value;
+            const schoolPhoneNumber = "+1234567890"; // Replace with actual school phone number
+            const url = `sms:${schoolPhoneNumber}?body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nMessage: ' + message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Generate Calendar
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        
+        function generateCalendar(month, year) {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+        
+            const monthYear = document.getElementById('month-year');
+            const monthNames = ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'];
+            monthYear.textContent = `${monthNames[month]} ${year}`;
+        
+            const firstDay = new Date(year, month).getDay();
+            const daysInMonth = 32 - new Date(year, month, 32).getDate();
+        
+            const weekdays = ['रवि', 'सोम', 'मंगळ', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
+        
+            weekdays.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.classList.add('header');
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+        
+            for (let i = 0; i < firstDay; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('disabled');
+                calendar.appendChild(cell);
+            }
+        
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.textContent = day;
+        
+                if (day === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                    cell.classList.add('today');
+                }
+        
+                calendar.appendChild(cell);
+            }
+        }
+        
+        function prevMonth() {
+            currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+            currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            generateCalendar(currentMonth, currentYear);
+        }
+        
+        function nextMonth() {
+            currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+            currentMonth = (currentMonth + 1) % 12;
+            generateCalendar(currentMonth, currentYear);
+        }
+        
+        generateCalendar(currentMonth, currentYear);
+        
+        // Fetch and display events
+        async function displayEvents() {
+            const eventsRef = ref(database, 'events');
+            const snapshot = await get(eventsRef);
+            const eventsSection = document.getElementById('events-section');
+            eventsSection.innerHTML = ''; // Clear existing content
+
+            snapshot.forEach(async (childSnapshot) => {
+                const event = childSnapshot.val();
+                const eventContainer = document.createElement('div');
+                eventContainer.classList.add('event-container');
+
+                const eventImage = document.createElement('img');
+                eventImage.classList.add('event-image');
+
+                const imageUrl = event.imageUrl;
+                if (imageUrl) {
+                    eventImage.src = imageUrl;
+                } else {
+                    eventImage.src = 'path/to/default/image.jpg';
+                }
+
+                const eventTitle = document.createElement('div');
+                eventTitle.classList.add('event-title');
+                eventTitle.textContent = event.title;
+
+                const eventDescription = document.createElement('div');
+                eventDescription.classList.add('event-description');
+                eventDescription.textContent = event.description;
+
+                eventContainer.appendChild(eventImage);
+                eventContainer.appendChild(eventTitle);
+                eventContainer.appendChild(eventDescription);
+
+                eventsSection.appendChild(eventContainer);
+            });
+        }
+
+        // Fetch and display news
+        async function displayNews() {
+            const newsRef = ref(database, 'newss');
+            const snapshot = await get(newsRef);
+            const newsSection = document.getElementById('news-section');
+            newsSection.innerHTML = ''; // Clear existing content
+        
+            snapshot.forEach(async (childSnapshot) => {
+                const newsItem = childSnapshot.val();
+                const newsContainer = document.createElement('div');
+                newsContainer.classList.add('news-description');
+        
+                const newsImage = document.createElement('img');
+                newsImage.classList.add('news-image');
+
+                const imageUrl = newsItem.imageUrl;
+                if (imageUrl) {
+                    newsImage.src = imageUrl;
+                } else {
+                    newsImage.src = 'path/to/default/image.jpg';
+                }
+        
+                const newsTitle = document.createElement('div');
+                newsTitle.classList.add('news-title');
+                newsTitle.textContent = newsItem.title;
+        
+                const newsText = document.createElement('p');
+                newsText.textContent = newsItem.description;
+        
+                newsContainer.appendChild(newsImage);
+                newsContainer.appendChild(newsTitle);
+                newsContainer.appendChild(newsText);
+        
+                newsSection.appendChild(newsContainer);
+            });
+        }
+
+        async function fetchSuvichar() {
+            const suvicharRef = ref(database, 'suvichars');
+            const snapshot = await get(suvicharRef);
+            if (snapshot.exists()) {
+                const suvichars = snapshot.val();
+                const suvicharKeys = Object.keys(suvichars);
+                const randomKey = suvicharKeys[Math.floor(Math.random() * suvicharKeys.length)];
+                const suvichar = suvichars[randomKey];
+                const suvicharText = document.getElementById('suvichar-text');
+                suvicharText.textContent = suvichar.text;
+            } else {
+                console.log("No Suvichars available");
+            }
+        }
+
+        // Fetch and display Date-Specific Event
+        async function fetchDateSpecificEvent(date) {
+            const dateEventRef = ref(database, 'dateEvents');
+            const snapshot = await get(dateEventRef);
+            const dateEventBox = document.getElementById('date-event-box');
+            dateEventBox.innerHTML = ''; // Clear previous event
+            dateEventBox.style.display = 'none'; // Hide box if no event
+
+            if (snapshot.exists()) {
+                const events = snapshot.val();
+                const event = Object.values(events).find(event => event.date === date);
+                if (event) {
+                    dateEventBox.innerHTML = `
+                        <h3>${event.date}</h3>
+                        <ul>
+                            ${event.points.map(point => `<li>${point}</li>`).join('')}
+                        </ul>
+                    `;
+                    dateEventBox.style.display = 'block'; // Show box if event exists
+                } else {
+                    dateEventBox.style.display = 'none'; // Hide box if no event
+                }
+            } else {
+                console.log("No Date-Specific Events available");
+            }
+        }
+
+        // Initial fetch
+        fetchSuvichar();
+        fetchDateSpecificEvent(`${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`);
+        
+        // Initial fetch
+        displayEvents();
+        displayNews();
+    </script>
+</body>
+</html>
